@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var auth = require('http-auth');
 
-var ROOT_DIR = path.join(__dirname + '/../');
+var ROOT_DIR = path.join(__dirname);
 var config = JSON.parse(fs.readFileSync(ROOT_DIR + '/config.json'));
 var basic = auth.basic({
     realm: "Simon Area."

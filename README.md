@@ -9,14 +9,14 @@ Sometime I dont have right access to SSH server, or I want to share the logs to 
 
    ```
    $ npm install
-   $ node node-server/app.js
+   $ node server.js
    ```
 
   * Ruby/Sinatra server:
 
    ```
    $ bundle
-   $ ruby ruby-server/server.rb
+   $ ruby server.rb
    ```
 
 ### Configuration
@@ -27,7 +27,7 @@ See `config.json`:
   "server": {
     "port": "5000"
   },
-  "auth": {
+  "auth": { // Basic auth
     "username": "me",
     "password": "123456"
   }
@@ -42,4 +42,4 @@ Code just for fun! Should use only in staging or development only.
 
 ### Libraries
 * [node-tail](https://github.com/lucagrulla/node-tail)
-* [ruby-tail] (https://github.com/flori/file-tail)
+* [ruby-tail](https://github.com/flori/file-tail)

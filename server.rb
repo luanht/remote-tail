@@ -1,7 +1,5 @@
-WORKING_DIR = File.expand_path File.dirname(__FILE__)
-ROOT_DIR    = File.expand_path("..", WORKING_DIR)
+ROOT_DIR    = File.expand_path("..", __FILE__)
 
-ENV['BUNDLE_GEMFILE'] ||= File.expand_path('Gemfile', WORKING_DIR)
 require 'rubygems'
 require 'bundler/setup'
 require 'json'

@@ -1,5 +1,5 @@
 {
-  "name": "Remote tail",
+  "name": "remote-tail",
   "version": "1.0.0",
   "description": "Tool for monitoring logs file in remote servers via browser",
   "main": "app.js",
