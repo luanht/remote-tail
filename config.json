@@ -1,0 +1,9 @@
+{
+  "server": {
+    "port": "5000"
+  },
+  "auth": {
+    "username": "me",
+    "password": "123456"
+  }
+}

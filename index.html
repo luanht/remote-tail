@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Retail</title>
+    <meta charset="UTF-8" />
+    <style>
+      html {
+        font-family: "lucida console","Courier New",monospace !important;
+        color: #767676;
+      }
+      body {
+        margin: 0;
+      }
+      * {
+        font-family: "Lucida Console","Courier New",monospace !important;
+      }
+      button {
+        margin-bottom: 0;
+        font-weight: normal;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        background-image: none;
+        border: 1px solid transparent;
+        white-space: nowrap;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.4;
+        border-radius: 1px;
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+        width: 150px;
+      }
+      button:hover {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+      }
+      input[type=text] {
+        height: 30px;
+        padding: 0 3px;
+        border: 1px solid transparent;
+        background-color: #fff;
+        border-color: #ccc;
+      }
+      input[type=checkbox] {
+        -moz-transform: scale(1.25);
+        -webkit-transform: scale(1.25);
+        -o-transform: scale(1.25);
+        transform: scale(1.25);
+      }
+      #container {
+        margin: 20px 10px;
+      }
+      #input-file-path {
+        width: 500px;
+      }
+      #nav {
+      }
+      #output-wrap {
+        width: 100%;
+      }
+      #output {
+        border: 1px solid #DADADA;
+        height: 450px;
+        padding: 0 5px;
+        overflow-x: scroll;
+        line-height: 1.40em;
+      }
+      #output {
+        background-color: #222;
+        text-shadow: 1px 1px 0 rgba(0,0,0,.4);
+        color: #fff;
+      }
+      #output-control {
+        text-align: right;
+        margin-bottom: 5px;
+      }
+    </style>
+
+    <script>
+      function newlineToBr(str) {
+        return str;
+      };
+
+      window.addEventListener("load", function() {
+        var btnControl = document.getElementById("btn-control");
+        var btnClear = document.getElementById("btn-clear");
+        var output = document.getElementById("output");
+        var inputFile = document.getElementById("input-file-path");
+        var cbAutoScroll = document.getElementById("cb-auto-scroll");
+
+        var source;
+        var isWatching = false;
+
+        btnControl.onclick = function() {
+          if (isWatching) {
+            stopWatching();
+          } else {
+            if (getFilePath().length > 0) {
+              startWatching();
+            } else {
+              alert("Please specify an absolute file path!");
+            }
+          }
+        };
+
+        btnClear.onclick = clearOutput;
+
+        function startWatching() {
+          source = new EventSource("watch?filePath=" + getFilePath());
+          source.addEventListener("message", onSourceMessage, false);
+          source.addEventListener("open", onSourceOpen, false);
+          source.addEventListener("error", onSourceError, false);
+          source.addEventListener("exception", onException, false);
+
+          btnControl.textContent = "Unwatch";
+          inputFile.disabled = true;
+        }
+
+        function stopWatching() {
+          source.removeEventListener("message", onSourceMessage);
+          source.removeEventListener("open", onSourceOpen);
+          source.removeEventListener("error", onSourceError);
+
+          inputFile.disabled = false;
+          btnControl.textContent = "Watch";
+          appendOutput("[INF] Stoped watching");
+          isWatching = false;
+          source.close();
+        }
+
+        function isAutoScroll() {
+          return cbAutoScroll.checked;
+        }
+
+        function getFilePath() {
+          return inputFile.value.trim();
+        }
+
+        function clearOutput() {
+          output.innerHTML = '';
+        };
+
+        function appendOutput(text) {
+          output.innerHTML += "<br>" + newlineToBr(text);
+          if (isAutoScroll()) {
+            output.scrollTop = output.scrollHeight;
+          }
+        }
+
+        function onSourceMessage(event) {
+          appendOutput(event.data);
+        };
+
+        function onSourceOpen(event) {
+          isWatching = true;
+          console.log('onSourceOpen');
+          appendOutput("[INF] Connected. Watching ...");
+        };
+
+        function onException(event) {
+          var eventData = JSON.parse(event.data);
+          appendOutput("[ERR] " + eventData.message);
+        };
+
+        function onSourceError(event) {
+          if (event.target.readyState === EventSource.CLOSED || event.target.readyState === EventSource.CONNECTING) {
+            appendOutput("[INF] Connection closed.");
+            stopWatching();
+          } else {
+            appendOutput("[INF] Connection closed due to an error!");
+            stopWatching();
+          }
+        };
+
+        if (!window.EventSource) {
+          appendOutput("[ERR] Sorry, your browser doesn't support server-sent events");
+        }
+      }, false);
+    </script>
+  </head>
+
+  <body>
+      <div id="container">
+        <div id="nav">
+          <label for="input-file-path">Path to file: </label><input type="text" id="input-file-path"/>
+          <button type="button" id="btn-control">Watch</button>
+        </div>
+
+        <div id="output-wrap">
+          <div id="output-control">
+            <label><input type="checkbox" checked id="cb-auto-scroll">Auto scroll</label>
+            <button type="button" id="btn-clear">Clear</button>
+          </div>
+          <div id="output"></div>
+        </div>
+       </div>
+  </body>
+</html>
