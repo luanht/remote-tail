@@ -1,7 +1,7 @@
 {
-  "name": "retail",
+  "name": "Remote tail",
   "version": "1.0.0",
-  "description": "Something",
+  "description": "Tool for monitoring logs file in remote servers via browser",
   "main": "app.js",
   "dependencies": {
     "tail": "^1.1.0",
@@ -11,7 +11,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Luan Thanh",
+  "author": "LuanHt",
   "license": "MIT",
   "private": true
 }
