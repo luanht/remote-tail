@@ -25,9 +25,10 @@ See `config.json`:
 ```JSON
 {
   "server": {
+    "bind": "0.0.0.0",
     "port": "5000"
   },
-  "auth": { // Basic auth
+  "auth": {
     "username": "me",
     "password": "123456"
   }

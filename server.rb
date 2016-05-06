@@ -14,6 +14,7 @@ authorize do |username, password|
 end
 
 configure do
+  set :bind, config["server"]["bind"]
   set :port, config["server"]["port"]
 end
 

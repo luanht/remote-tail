@@ -7,7 +7,7 @@ var auth = require('http-auth');
 var ROOT_DIR = path.join(__dirname);
 var config = JSON.parse(fs.readFileSync(ROOT_DIR + '/config.json'));
 var basic = auth.basic({
-    realm: "Simon Area."
+    realm: "Somewhere"
   }, function (username, password, callback) {
     callback(username === config.auth.username && password === config.auth.password);
   }
@@ -75,6 +75,6 @@ http.createServer(basic, function (req, res) {
       res.write("<h1>Not found</h1>");
       res.end();
    }
-}).listen(config.server.port);
+}).listen(config.server.port, config.server.bind);
 
 
