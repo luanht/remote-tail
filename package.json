@@ -1,7 +1,7 @@
 {
   "name": "remote-tail",
   "version": "1.0.0",
-  "description": "Tool for monitoring logs file in remote servers via browser",
+  "description": "Small tool for monitoring logs file from remote servers via browser",
   "main": "app.js",
   "dependencies": {
     "tail": "^1.1.0",

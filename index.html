@@ -80,8 +80,14 @@
     </style>
 
     <script>
-      function newlineToBr(str) {
-        return str;
+      function getParameter(name) {
+        var url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
       };
 
       window.addEventListener("load", function() {
@@ -93,6 +99,12 @@
 
         var source;
         var isWatching = false;
+
+        // Pre-fill input file path from query string
+        var filePathParam = getParameter('file');
+        if (filePathParam) {
+          inputFile.value = filePathParam;
+        }
 
         btnControl.onclick = function() {
           if (isWatching) {
@@ -109,7 +121,7 @@
         btnClear.onclick = clearOutput;
 
         function startWatching() {
-          source = new EventSource("watch?filePath=" + getFilePath());
+          source = new EventSource("watch?file=" + getFilePath());
           source.addEventListener("message", onSourceMessage, false);
           source.addEventListener("open", onSourceOpen, false);
           source.addEventListener("error", onSourceError, false);
@@ -144,7 +156,7 @@
         };
 
         function appendOutput(text) {
-          output.innerHTML += "<br>" + newlineToBr(text);
+          output.innerHTML += "<br>" + text;
           if (isAutoScroll()) {
             output.scrollTop = output.scrollHeight;
           }
@@ -156,7 +168,6 @@
 
         function onSourceOpen(event) {
           isWatching = true;
-          console.log('onSourceOpen');
           appendOutput("[INF] Connected. Watching ...");
         };
 

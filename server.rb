@@ -31,7 +31,7 @@ protect do
       "Cache-Control" => "no-cache",
       "Connection"    => "keep-alive"
 
-    watchFile = request["filePath"]
+    watchFile = request["file"]
     stream do |out|
       out << "retry: 10000\n\n"
 

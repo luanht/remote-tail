@@ -34,7 +34,7 @@ http.createServer(basic, function (req, res) {
       res.write("retry: 10000\n\n");
 
       try {
-        var watchFile = requestUrl.query.filePath;
+        var watchFile = requestUrl.query.file;
 
         fs.stat(watchFile, function(err, stat) {
           if(err == null) {
